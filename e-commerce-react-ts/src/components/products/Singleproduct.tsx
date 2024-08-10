@@ -1,53 +1,79 @@
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useProductsContext } from "../context/ProductContext";
+import StarSvg from "../../assets/star-7207.svg";
 
-import React, { ReactNode, useEffect, useState } from 'react';
-
-interface DataItem {
-  price: ReactNode;
-  description: ReactNode;
-  category: ReactNode;
-  image: string | undefined;
-  id: number;
-  title: string;
-}
+const API = "https://fakestoreapi.com/products";
 
 const SingleProduct: React.FC = () => {
-  const [data, setData] = useState<DataItem | null>(null); // Change state to hold a single product object
+  const { getSingleProduct, isSingleLoading, SingleProduct } =
+    useProductsContext();
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products/1')
-      .then(res => res.json())
-      .then(data => setData(data))
-      .catch(error => console.log(error));
-  }, []);
+    if (id) {
+      getSingleProduct(`${API}/${id}`);
+    }
+  }, [id]);
 
-  if (!data) {
+  if (isSingleLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (!SingleProduct) {
+    return <div>No Product Found</div>;
   }
 
   return (
     <>
-    <h1 className='text-center font-bold text-2xl'>Single Product</h1>
-    <section className="text-gray-600 body-font">
-      <div className="container px-5 py-20 mx-auto">
-        <div className="flex justify-center">
-          <div className="lg:w-1/4 md:w-1/3 p-4 m-auto border-black border-2 border-opacity-60 w-full" key={data.id}>
-            <a className="block relative h-full overflow-hidden object-center">
-              <img alt={data.title} className="object-cover object-center w-full h-48 block cursor-pointer relative" src={data.image} />
-            </a>
-            <div className="mt-4">
-              <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">{data.category}</h3>
-              <h2 className="text-gray-900 title-font text-lg font-medium">{data.title}</h2>
-              <p className="mt-1">{data.price}</p>
-              <p className="mt-1">{data.description}</p>
-            </div>
+      <h1 className="text-center font-bold text-2xl">Single Product</h1>
+      <div className="product-detail-container max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg flex flex-col md:flex-row">
+        <div className="product-image-container md:w-1/2 w-full flex justify-center md:justify-start mb-6 md:mb-0">
+          <div className="w-64 h-64 relative">
+            <img
+              src={SingleProduct.image}
+              alt={SingleProduct.title}
+              className="product-image absolute inset-0 w-full h-full object-cover rounded-lg"
+            />
           </div>
         </div>
+        <div className="product-info md:w-1/2 w-full md:ml-6">
+          <h2 className="text-3xl font-semibold mb-4 text-gray-800">
+            {SingleProduct.title}
+          </h2>
+          <p className="text-lg text-gray-700 leading-relaxed mb-4">
+            {SingleProduct.description}
+          </p>
+
+          {/* Price, rating, and count in a single line */}
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-2xl font-bold text-blue-600">
+              ${SingleProduct.price}
+            </p>
+            {SingleProduct.rating ? (
+              <div className="flex items-center">
+                <p className="text-lg text-gray-700 mr-2">
+                  {SingleProduct.rating.rate}
+                </p>
+                <img src={StarSvg} alt="Rating star" className="h-5 w-5" />
+                <span className="text-lg text-gray-700 ml-2">
+                  ({SingleProduct.rating.count})
+                </span>
+              </div>
+            ) : (
+              <p className="text-lg text-gray-700">No rating available</p>
+            )}
+          </div>
+
+          <form className="mt-4">
+            <button className="w-full rounded bg-yellow-400 p-2 text-sm font-medium transition-transform hover:scale-105">
+              Add to Cart
+            </button>
+          </form>
+        </div>
       </div>
-    </section>
     </>
   );
-  
 };
 
 export default SingleProduct;
-

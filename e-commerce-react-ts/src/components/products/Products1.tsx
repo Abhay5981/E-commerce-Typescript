@@ -1,8 +1,9 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import StarSvg from "../../assets/star-7207.svg";
+import { NavLink } from "react-router-dom";
 
 interface DataItem {
-  rating: any;
+  rating: { rate: number; count: number };
   price: ReactNode;
   description: ReactNode;
   category: ReactNode;
@@ -11,7 +12,6 @@ interface DataItem {
   title: string;
 }
 
-
 const Products: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
 
@@ -19,49 +19,43 @@ const Products: React.FC = () => {
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
       .then((data) => setData(data))
-      .then((error) => console.log(error));
+      .catch((error) => console.log(error));
   }, []);
-
-
 
   return (
     <>
-    <h1 className="text-center text-bold text-2xl hover:text-yellow-800 underline">Products</h1>
-    <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 m-28">
-      { data.slice(0,9).map((product) => (
-        <li key={product.id} className="flex h-full">
-          <div className="group relative block overflow-hidden border flex-grow">
-            <img
-              src={product.image}
-              alt={product.title}
-              className="h-64 w-full object-contain transition duration-500 group-hover:scale-105 sm:h-72"
-            />
-            <div className="relative border border-gray-100 bg-white px-6 pb-6">
-              <h3 className="mt-4 text-lg font-medium text-gray-900">
-                {product.title}
-              </h3>
-              <div className="flex justify-between items-center mt-1.5 text-sm text-gray-700">
-                <p>
-                  Price: <span className="font-semibold">${product.price}</span>
-                </p>
-                <div className="flex gap-2">
-                  <div className="flex">
-                    <span>{product.rating.rate}</span>
-                    <img
-                      className="h-4 w-4 self-center"
-                      src={StarSvg}
-                      alt="rating-star"
-                    />
+      <div className="mt-6">
+        <ul className="grid gap-6 px-4 sm:px-6 lg:px-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+          {data.slice(0, 6).map((product) => (
+            <li
+              key={product.id}
+              className="flex flex-col border rounded-lg overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105"
+            >
+              <NavLink to={`/SingleProduct/${product.id}`}>
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-48 sm:h-60 object-cover transition-transform duration-500"
+                />
+              </NavLink>
+              <div className="p-4 flex flex-col flex-grow">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{product.title}</h3>
+                <div className="flex justify-between items-center mb-2 text-sm text-gray-700">
+                  <p className="font-semibold">${product.price}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center">
+                      <span className="mr-1">{product.rating.rate}</span>
+                      <img className="h-4 w-4" src={StarSvg} alt="rating-star" />
+                    </div>
+                    <span>({product.rating.count})</span>
                   </div>
-                  <span>({product.rating.count})</span>
                 </div>
+                <p className="text-sm text-gray-600 truncate">{product.description}</p>
               </div>
-              
-            </div>
-          </div>
-        </li>
-      ))}
-    </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 };
