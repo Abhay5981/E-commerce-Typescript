@@ -24,20 +24,22 @@ const Products: React.FC = () => {
 
   return (
     <>
-      <div className="mt-6">
+      <div className="mt-6 ">
         <ul className="grid gap-6 px-4 sm:px-6 lg:px-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
           {data.slice(0, 6).map((product) => (
             <li
               key={product.id}
               className="flex flex-col border rounded-lg overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105"
             >
+              <div className="">
               <NavLink to={`/SingleProduct/${product.id}`}>
                 <img
                   src={product.image}
                   alt={product.title}
-                  className="w-full h-48 sm:h-60 object-cover transition-transform duration-500"
+                  className="max-w-full h-auto sm:h-60 transition-transform duration-500 m-auto p-4"
                 />
               </NavLink>
+              </div>
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-lg font-medium text-gray-900 mb-2">{product.title}</h3>
                 <div className="flex justify-between items-center mb-2 text-sm text-gray-700">

@@ -64,12 +64,14 @@ const SingleProduct: React.FC = () => {
               <p className="text-lg text-gray-700">No rating available</p>
             )}
           </div>
+          <hr className="border-yellow-400 "/>
 
           <form className="mt-4">
             <button className="w-full rounded bg-yellow-400 p-2 text-sm font-medium transition-transform hover:scale-105">
               Add to Cart
             </button>
           </form>
+          
         </div>
       </div>
     </>
