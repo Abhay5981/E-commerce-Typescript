@@ -76,6 +76,11 @@ const Nav: React.FC<{ className?: string }> = ({ className }) => {
               Contact Us
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/cart" className="navbar-link hover:text-yellow-400" onClick={toggleMenu}>
+              Cart
+            </NavLink>
+          </li>
         </ul>
       )}
     </nav>

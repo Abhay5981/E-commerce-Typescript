@@ -32,6 +32,8 @@ const initialState = {
     featureProducts:[],
     isSingleLoading: false,
     SingleProduct: {},
+    
+    
 }
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);

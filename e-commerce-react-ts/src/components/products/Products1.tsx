@@ -24,7 +24,7 @@ const Products: React.FC = () => {
 
   return (
     <>
-      <div className="mt-6 ">
+      <div className="mt-6 bg-sky-200 py-10">
         <ul className="grid gap-6 px-4 sm:px-6 lg:px-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
           {data.slice(0, 6).map((product) => (
             <li

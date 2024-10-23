@@ -8,7 +8,7 @@ const Home = () => {
     <>
       <HeroSection />
       <FeatureProduct/>
-      <Products1 />
+      
       <Testimonial />
     </>
   );
